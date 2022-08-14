@@ -1,2 +1,2 @@
 # ActiveObject
-Active object pattern
+A simple active object pattern
