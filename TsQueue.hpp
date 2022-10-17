@@ -3,6 +3,7 @@
 #pragma once
 
 #include <cstddef>
+#include <iostream>
 #include <mutex>
 #include <queue>
 
@@ -12,24 +13,28 @@ private:
   std::mutex protector;
 
 public:
-  void push(T &value) {
+  virtual ~TsQueue() {
+    std::cout << "TSQueue destructor" << std::endl;
+    tQ = {};
+  }
+  void push(const T &value) {
     std::unique_lock<std::mutex> lock(protector);
     tQ.push(value);
   }
 
-  T &front() {
+  T front() {
     std::unique_lock<std::mutex> lock(protector);
     auto data = tQ.front();
     tQ.pop();
     return data;
   }
 
-  size_t size() const {
+  size_t size() {
     std::unique_lock<std::mutex> lock(protector);
     return tQ.size();
   }
 
-  bool empty() const {
+  bool empty() {
     std::unique_lock<std::mutex> lock(protector);
     return tQ.empty();
   }
